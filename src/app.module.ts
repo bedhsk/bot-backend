@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
 import { JwtService } from '@nestjs/jwt';
+import { WhatsappService } from './whatsapp/whatsapp.service';
+import { WhatsappModule } from './whatsapp/whatsapp.module';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { JwtService } from '@nestjs/jwt';
     }),
     UsersModule,
     AuthModule,
+    WhatsappModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],
