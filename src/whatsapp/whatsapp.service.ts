@@ -10,7 +10,20 @@ export class WhatsappService {
   private readonly logger = new Logger(WhatsappService.name);
 
   constructor() {
-    this.client = new Client({});
+    this.client = new Client({
+      puppeteer: {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process', // <- this one doesn't works in Windows
+          '--disable-gpu',
+        ],
+      },
+    });
 
     this.client.on('qr', (qr) => {
       this.qr = qr;
@@ -54,7 +67,7 @@ export class WhatsappService {
 
   private setupMessageHandler() {
     this.client.on('message', async (message: Message) => {
-      this.logger.log(`Mensaje recibido: ${message.body}`);
+      this.logger.log(`Mensaje recibido: ${message.from} ${message.body}`);
       await this.handleIncomingMessage(message);
     });
   }
